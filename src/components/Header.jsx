@@ -5,7 +5,7 @@ const Header = () => {
     <Box index>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h5">Staff</Typography>
+          <Typography variant="h5">Nhân viên quản lý</Typography>
         </Toolbar>
       </AppBar>
     </Box>
