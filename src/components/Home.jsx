@@ -6,8 +6,6 @@ import Actions from './Actions';
 const Home = () => {
   return (
     <>
-      <Header />
-      <Actions />
       <StudentManager />
     </>
   );
