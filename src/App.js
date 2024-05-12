@@ -5,6 +5,7 @@ import Search from './components/Search';
 import StudentDetail from "./components/StudentDetail";
 import StudentManager from './components/StudentManager';
 import StudentEdit from './components/StudentEdit';
+import StudentAdd from "./components/StudentAdd";
 
 function App() {
     document.title = "Quản lý thông tin sinh viên";
@@ -14,8 +15,10 @@ function App() {
                 <Route exact path="/" element={<Home/>}/>
                 <Route exact path="student-manager" element={<StudentManager/>}/>
                 <Route exact path="students/search" element={<Search/>}/>
+                <Route exact path="students/add" element={<StudentAdd/>}/>
                 <Route exact path="students/detail/:id" element={<StudentDetail/>}/>
                 <Route exact path="students/edit/:id" element={<StudentEdit/>}/>
+
             </Routes>
         </BrowserRouter>
     );

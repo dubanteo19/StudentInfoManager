@@ -1,21 +1,34 @@
-import React from 'react'
+import React, {useState} from 'react'
 import DataTable from 'react-data-table-component';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link } from 'react-router-dom';
-import { IconButton } from '@mui/material';
+import {Link} from 'react-router-dom';
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from '@mui/material';
+import toast, {Toaster} from 'react-hot-toast';
+
 export const StudentDataTable = (props) => {
-    const handleDelete = studentId => {
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+    const handleClickOpen = () => {
+        setOpenModal(true);
+    };
+    const handleClose = () => {
+        setOpenModal(false);
+    };
+    const handleDelete = () => {
+        let studentId = selectedId;
+        setOpenModal(false);
         let url = `http://localhost:8080/api/v1/students/${studentId}`;
         const requestOptions = {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
         };
         fetch(url, requestOptions).then(async res => {
-            alert("Xóa sinh viên thành công")
+            toast.success("Xóa sinh viên thành công");
+            props.handleDelete();
         }).catch(e => {
-            alert(e)
-        }
+                alert(e)
+            }
         )
     }
     const columns = [
@@ -41,12 +54,13 @@ export const StudentDataTable = (props) => {
                 return (
                     <>
                         <Link to={linkUrl}>
-                            <EditIcon sx={{ cursor: "pointer" }} color="primary" />
+                            <EditIcon sx={{cursor: "pointer"}} color="primary"/>
                         </Link>
                         <IconButton onClick={() => {
-                            handleDelete(row.studentId);
+                            handleClickOpen();
+                            setSelectedId(row.studentId);
                         }}>
-                            <DeleteIcon sx={{ cursor: "pointer" }} />
+                            <DeleteIcon sx={{cursor: "pointer"}}/>
                         </IconButton>
 
                     </>
@@ -55,13 +69,37 @@ export const StudentDataTable = (props) => {
         },
     ]
     return (
-        <DataTable
-            pagination
-            highlightOnHover
-            striped
-            columns={columns}
-            {...props}
-        />
+        <>      <Toaster/>
+            <Dialog
+                open={openModal}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Cảnh báo việc xoá sinh viên"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Một khi đã xoá sinh viên, bạn không thể khôi phục lại dữ liệu. Bạn có chắc chắn muốn xoá sinh
+                        viên
+                        này không?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Huỷ bỏ</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Xác nhận
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <DataTable
+                pagination
+                highlightOnHover
+                striped
+                columns={columns}
+                {...props}
+            /></>
 
     )
 }
