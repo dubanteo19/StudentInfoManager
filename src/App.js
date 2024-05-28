@@ -18,7 +18,6 @@ function App() {
                 <Route exact path="students/add" element={<StudentAdd/>}/>
                 <Route exact path="students/detail/:id" element={<StudentDetail/>}/>
                 <Route exact path="students/edit/:id" element={<StudentEdit/>}/>
-
             </Routes>
         </BrowserRouter>
     );

@@ -3,11 +3,13 @@ import Header from "./Header";
 import Actions from "./Actions";
 import {Button, Box, Container, TextField, Stack, Typography} from "@mui/material";
 import StudentCard from "./StudentCard";
+import {useNavigate} from "react-router-dom";
 
 const Search = () => {
         const [students, setStudents] = useState([]);
         const [error, setError] = useState("");
         const [studentId, setStudentId] = useState("");
+         const navigate = useNavigate();
         useEffect(() => {
             let url = "http://localhost:8080/api/v1/students";
             async function fetchData() {
@@ -21,7 +23,6 @@ const Search = () => {
                     setError("Đã xảy ra lỗi")
                 }
             }
-
             fetchData();
         }, []);
         const handleSearch = async () => {
@@ -33,6 +34,7 @@ const Search = () => {
                 let res = await fetch(`http://localhost:8080/api/v1/students/${studentId}`);
                 let data = await res.json();
                 if (!data.error) {
+                    navigate("/students/detail/"+studentId);
                     setStudents([data]);
                     setError("");
                 }
